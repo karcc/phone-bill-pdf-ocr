@@ -1,6 +1,9 @@
 # phone-bill-pdf-ocr
 Extract data from pdf using Google Tesseract OCR.
 
+### Python version
+Python 3.5 64bit
+
 ###Required libraries
 1. [OpenCV python wrapper](https://github.com/skvark/opencv-python)
 2. [Google Tesseract python wrapper](https://github.com/madmaze/pytesseract)

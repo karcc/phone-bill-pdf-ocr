@@ -8,6 +8,7 @@ from PIL import Image
 
 def main():
     # Code goes over here.
+    print(12345)
     return 0
 
 
