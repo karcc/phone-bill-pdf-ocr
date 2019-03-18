@@ -25,13 +25,14 @@ def main(argv):
     lastIdx = tableString.find('continues...') - 10
     tableData = tableString[firstIdx:lastIdx].strip()
     tableAry = [data for data in tableData.split('\n') if data]
+    tableAry = tableAry[:-(len(tableAry)-14)]
 
     testAry = np.zeros(shape=(12,7), dtype=object)
 
     print(tableData)
     print(tableAry)
 
-    for i in range(3,len(tableAry)-1):
+    for i in range(3,len(tableAry)):
         accountAry = tableAry[i].split(' ')
         # insert another data to Total row since it's missing a column
         testAry[0][0] = 'Number'
