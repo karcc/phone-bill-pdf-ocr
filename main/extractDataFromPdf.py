@@ -7,6 +7,7 @@ from pdf2image import convert_from_path
 import pandas as pd
 import sys
 import re
+import pdb
 
 
 def main(argv):
@@ -20,8 +21,8 @@ def main(argv):
     #print(tabley)
 
     tableString = pytesseract.image_to_string(Image.open('1_out.jpg'))
-    firstIdx = tableString.find('Group 1')
-    lastIdx = tableString.find('Devices') - 11
+    firstIdx = tableString.find('Wireless\nActivity')
+    lastIdx = tableString.find('continues...') - 10
     tableData = tableString[firstIdx:lastIdx].strip()
     tableAry = [data for data in tableData.split('\n') if data]
 
@@ -30,21 +31,50 @@ def main(argv):
     print(tableData)
     print(tableAry)
 
-    for i in range(len(tableAry)):
+    for i in range(3,len(tableAry)-1):
         accountAry = tableAry[i].split(' ')
         # insert another data to Total row since it's missing a column
-        if accountAry[0] == 'Total':
-            accountAry.insert(1, str(0))
+        testAry[0][0] = 'Number'
+        testAry[0][1] = 'Page'
+        testAry[0][2] = 'Activity since last bill'
+        testAry[0][3] = 'Monthly charges'
+        testAry[0][4] = 'Surcharges & fees'
+        testAry[0][5] = 'Government taxes & fees'
+        testAry[0][6] = 'Total'
+        # if accountAry[0] == 'Total':
+        #     accountAry.insert(1, str(0))
+        if tableAry[i].split(' ')[0] == 'Group':
+            temp = tableAry[i].split(' ')
+            testAry[1][0] = 'Group 1'
+            testAry[1][1] = '-'
+            for n in range(2,7):
+                if temp[n][0] == '$':
+                    testAry[1][n] = float(temp[n][1:])
+                else:
+                    testAry[1][n] = '-'
+        else:
+            main_values = tableAry[i].split(' ')
+            testAry[i-2][0] = main_values[0]
+            testAry[i-2][1] = int(main_values[1])
+            for n in range(2,7):
+                if main_values[n][0] == '$':
+                    testAry[i-2][n] = float(main_values[n][1:])
+                else:
+                    testAry[i-2][n] = '-'
+        print(testAry)
 
-        for j in range(len(accountAry)):
-            cellValue = accountAry[j]
-            # clean up cell data
-            if cellValue[0] == '$':
-                cellValue = accountAry[j][1:]
-            if cellValue[0] == '-' or cellValue[0] == '=' or cellValue[0] == chr(8220):
-                cellValue = 0
 
-            testAry[i][j] = cellValue
+
+
+        # for j in range(len(accountAry)):
+        #     cellValue = accountAry[j]
+        #     # clean up cell data
+        #     if cellValue[0] == '$':
+        #         cellValue = accountAry[j][1:]
+        #     if cellValue[0] == '-' or cellValue[0] == '=' or cellValue[0] == chr(8220):
+        #         cellValue = 0
+
+        #     testAry[i][j] = cellValue
 
 
     print(testAry)
@@ -65,4 +95,5 @@ def convertPdfToImage(input):
 
 
 if __name__ == "__main__":
+    pdb.set_trace()
     main(sys.argv[1:])
