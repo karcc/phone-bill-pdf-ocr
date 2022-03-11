@@ -1,6 +1,6 @@
 certifi==2018.8.24
 numpy==1.16.2
 opencv-python==4.0.0.21
-Pillow==6.2.0
+Pillow==9.0.1
 pytesseract==0.2.6
 Wand==0.5.1
